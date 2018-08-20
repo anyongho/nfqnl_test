@@ -24,7 +24,7 @@ void dump(unsigned char* buf, int size) {
 int checkhost()
 {
 	char *host;
-	char *blockhost = "Host: www.sex.com";
+	char *blockhost = "www.sex.com";
 	char Hostname[50];
 	struct iphdr* iph;
 	struct tcphdr* tph;
@@ -32,15 +32,15 @@ int checkhost()
 	iph = (struct iphdr *)packet;
 	tph = (struct tcphdr *) (packet + (iph->ihl*4));//header length * 4
 	http = (unsigned char *) (packet + (iph->ihl*4) + (tph->th_off*4));
-	host = strstr(http, "Host: "); 
+	host = strstr(http, "www."); 
 	if(host==NULL) // no host is ok
 		return 2;
-	printf("http : %s\n", http);
+	printf("http :\n%s\n", http);
 	strncpy(Hostname, host, strlen(blockhost));
 
 	if(!memcmp(blockhost, Hostname,strlen(blockhost)))
 	{
-		printf("%s is blocked\n", blockhost);
+		printf("%s is blocked\n\n", blockhost);
 		return 1;
 	}
 	else
